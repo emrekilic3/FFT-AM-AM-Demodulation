@@ -1,4 +1,3 @@
-%% Communication systems I, Spring 2020
 % FFT in Matlab, Part I.
 % Mehmet Karaca
 
@@ -75,27 +74,25 @@ ylabel('Amplitude')
 title('Two-Sided Spectrum of AM Modulated Signal')
 
 
-%Demodulation part by Eralp 
+% Demodulation
 
-% We do not need to A.CarrierSignal component, because if we take this signal,we will encounter with impulse signal in zero frequency during working on getting the original message signal.
-DemodulatedSignal= ModulatedSignal.*CarrierSignal; %coherent detection
+DemodulatedSignal= ModulatedSignal.*CarrierSignal; %applying coherent detection
 demodulatedsignalfft=fft(DemodulatedSignal,nfft);
 demodShifFFT = fftshift(demodulatedsignalfft);
- 
-ABSDeModulatedSignalFFT=abs(demodShifFFT)/N0;
- 
+ABSDeModulatedSignalFFT=abs(demodShifFFT)/N0; %taking the absolute spectrum
 subplot(3,3,5);
 plot(freqm,ABSDeModulatedSignalFFT)
 title('Demodulation Stage Before Applying LPF (low-pass filter)')
 xlabel('Time(s)')
 ylabel('Amplitude')
 %Applying Low-Pass filter
-[k,l] = butter(5,(fc).*2/Fs); 
-filtered_signal = filtfilt(k,l,2.*DemodulatedSignal-A) ; %convolution and multiplication by 2 because we got message signal devided by 2 after multiplying by the carrier
+[k,l] = butter(5,(10000).*2/Fs);
+filtered_signal = filtfilt(k,l,2.*DemodulatedSignal-A) ; %Convolution and
+Multiplication by 2 because we got message signal m(t) divided by 2 after
+multiplying by the carrier
 subplot(3,3,6)
-plot(t,filtered_signal); %Plotting Demodulated Signal 
+plot(t,filtered_signal); %Plotting Demodulated Signal
 title('Filtered Signal in Time Domain')
 xlabel('Time(s)')
 ylabel('Amplitude')
-
 
